@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Runner (PC + Phone)</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background: #2563eb;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-size: 18px;
+    }
+    .container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    textarea {
+      flex: 1;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 14px;
+      border: none;
+      outline: none;
+      resize: none;
+      height: 100%;
+    }
+    iframe {
+      flex: 1;
+      border: none;
+      background: white;
+      height: 100%;
+    }
+    footer {
+      padding: 10px;
+      background: #f0f0f0;
+      text-align: center;
+    }
+    button {
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    #runBtn { background: #16a34a; color: white; }
+    #saveBtn { background: #dc2626; color: white; }
+
+    /* 📱 Responsive for phones */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column; /* stack editor & preview */
+      }
+      textarea, iframe {
+        width: 100%;
+        height: 50%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>💻 Code Runner (PC + Phone)</header>
+  
+  <div class="container">
+    <textarea id="code" placeholder="Write your HTML, CSS, or JavaScript code here..."></textarea>
+    <iframe id="output"></iframe>
+  </div>
+  
+  <footer>
+    <button id="runBtn">▶ Run Code</button>
+    <button id="saveBtn">💾 Save Code</button>
+  </footer>
+
+  <script>
+    const runBtn = document.getElementById("runBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const code = document.getElementById("code");
+    const output = document.getElementById("output");
+
+    // Run code inside iframe
+    runBtn.addEventListener("click", () => {
+      output.srcdoc = code.value;
+    });
+
+    // Save code as .html file
+    saveBtn.addEventListener("click", () => {
+      const blob = new Blob([code.value], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "myCode.html"; // default file name
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
